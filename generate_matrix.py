@@ -2,7 +2,7 @@ from bio import Phylo
 import pylab
 import pandas as pd
 from math import log10
-
+import csv
 
 class JTTMatrix:
     def __init__ (self, dated_reconciled_tree_path, alignment_path):
@@ -216,8 +216,6 @@ class JTTMatrix:
                 result[amino_acid].append(matrix[amino_acid][another_amino_acid])
         return pd.DataFrame(result, index=self.amino_acid_list)
 
-
-
 a = JTTMatrix("PF12720.dated.nwk", "PF12720.fasta")
 a.draw_tree()
 lst = a.tree.get_terminals()
@@ -225,10 +223,16 @@ lst1 = a.tree.get_nonterminals()
 print(lst)
 print(lst1)
 print(a.tree.distance(lst[0], lst[1]))
+print(a.tree.distance(lst[0]))
 print(a.tree.trace(lst[0], lst[0]))
 print(a.tree.trace(lst[0], lst1[0]))
 print(lst1[0] == lst1[3])
 print(str(lst[1]))
+
+df = pd.read_csv('result.csv')
+for index, row in df.iterrows():
+    d = row.to_dict()
+    print(d)
 '''
 b = a.get_normalized_frequency(a.get_total_exposure_of_amino_acid_to_mutation())
 c = a.construct_JTT_matrix()
